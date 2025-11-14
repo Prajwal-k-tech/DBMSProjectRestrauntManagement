@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+*.lcov
+
+# Next.js
+.next/
+out/
+dist/
+build/
+
+# Production
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Environment files
+.env
+.env*.local
+.env.development
+.env.production
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.sql.backup
+*.dump
+
+# Misc
+*.tgz
+.npm
+.eslintcache
+.cache/
