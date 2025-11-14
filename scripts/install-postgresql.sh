@@ -7,33 +7,33 @@
 
 set -e  # Exit on error
 
-echo "🔧 Starting PostgreSQL Installation..."
+echo " Starting PostgreSQL Installation..."
 
 # Update package list
-echo "📦 Updating package list..."
+echo " Updating package list..."
 sudo apt update
 
 # Install PostgreSQL
-echo "📥 Installing PostgreSQL..."
+echo " Installing PostgreSQL..."
 sudo apt install -y postgresql postgresql-contrib
 
 # Check if installation was successful
-echo "✅ Checking PostgreSQL version..."
+echo " Checking PostgreSQL version..."
 psql --version
 
 # Start PostgreSQL service
-echo "🚀 Starting PostgreSQL service..."
+echo " Starting PostgreSQL service..."
 sudo systemctl start postgresql
 sudo systemctl enable postgresql
 
 # Check service status
-echo "📊 PostgreSQL service status:"
+echo " PostgreSQL service status:"
 sudo systemctl status postgresql --no-pager
 
 echo ""
-echo "✅ PostgreSQL installation complete!"
+echo " PostgreSQL installation complete!"
 echo ""
-echo "📝 Next steps:"
+echo " Next steps:"
 echo "1. Switch to postgres user: sudo -i -u postgres"
 echo "2. Access PostgreSQL: psql"
 echo "3. Create database: CREATE DATABASE restaurant_db;"

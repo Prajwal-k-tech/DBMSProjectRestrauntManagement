@@ -235,28 +235,28 @@ order_item_id | order_id | menu_item_id | quantity | unit_price | subtotal
 ## 🎯 Key Features
 
 ### Database Constraints
-✅ Primary Keys on all tables  
-✅ Foreign Keys with appropriate CASCADE/RESTRICT  
-✅ CHECK constraints for business rules  
-✅ UNIQUE constraints to prevent duplicates  
-✅ NOT NULL constraints for required fields  
+ Primary Keys on all tables  
+ Foreign Keys with appropriate CASCADE/RESTRICT  
+ CHECK constraints for business rules  
+ UNIQUE constraints to prevent duplicates  
+ NOT NULL constraints for required fields  
 
 ### Automatic Features
-✅ Auto-incrementing IDs (SERIAL)  
-✅ Timestamp tracking (created_at, updated_at)  
-✅ Triggers for automatic timestamp updates  
-✅ Enums for controlled values (status, order_type)  
+ Auto-incrementing IDs (SERIAL)  
+ Timestamp tracking (created_at, updated_at)  
+ Triggers for automatic timestamp updates  
+ Enums for controlled values (status, order_type)  
 
 ### Data Integrity
-✅ Prices must be positive  
-✅ Quantities must be positive  
-✅ Subtotals must match calculation  
-✅ Phone numbers must be unique  
-✅ Category names must be unique  
+ Prices must be positive  
+ Quantities must be positive  
+ Subtotals must match calculation  
+ Phone numbers must be unique  
+ Category names must be unique  
 
 ---
 
-## 📝 Sample Queries
+##  Sample Queries
 
 ### Get all menu items with category names
 ```sql
@@ -289,19 +289,19 @@ GROUP BY DATE(order_date);
 
 ---
 
-## 🗂️ Normalization Status
+## ️ Normalization Status
 
 This schema is normalized to **Third Normal Form (3NF)**:
 
-✅ **1NF:** All attributes are atomic, no repeating groups  
-✅ **2NF:** No partial dependencies on composite keys  
-✅ **3NF:** No transitive dependencies between non-key attributes  
+ **1NF:** All attributes are atomic, no repeating groups  
+ **2NF:** No partial dependencies on composite keys  
+ **3NF:** No transitive dependencies between non-key attributes  
 
 See `Normalization-Steps.md` for detailed normalization process.
 
 ---
 
-## 🚀 Ready for Implementation
+##  Ready for Implementation
 
 This schema is ready to be:
 - Converted into an ER Diagram

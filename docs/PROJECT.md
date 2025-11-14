@@ -2,7 +2,7 @@
 # Restaurant Order Management System
 ## DBMS Lab Project - Complete Implementation
 
-**Status:** ✅ Fully Implemented and Tested
+**Status:**  Fully Implemented and Tested
 **Test Results:** 20/20 Passed (100%)
 **Tech Stack:** Next.js 15.5.6 + TypeScript + PostgreSQL 16.10 + Tailwind CSS
 
@@ -10,7 +10,7 @@
 
 ## Implementation Summary
 
-### What's Built ✅
+### What's Built 
 - **Backend:** 8 RESTful API endpoints with raw SQL
 - **Frontend:** 4 responsive pages (Dashboard, Menu, Orders, Customers)
 - **Database:** 5 normalized tables (3NF) with 68 rows of data
@@ -176,13 +176,13 @@ The following features are explicitly excluded from this version:
 
 ### Success Criteria
 The system will be considered successful if it:
-1. ✅ Allows staff to create and manage orders efficiently
-2. ✅ Maintains accurate menu with real-time availability
-3. ✅ Stores complete customer and order history
-4. ✅ Generates accurate bills automatically
-5. ✅ Enforces all business rules through database constraints
-6. ✅ Provides clear, normalized database schema (3NF)
-7. ✅ Displays SQL implementation clearly for academic evaluation
+1.  Allows staff to create and manage orders efficiently
+2.  Maintains accurate menu with real-time availability
+3.  Stores complete customer and order history
+4.  Generates accurate bills automatically
+5.  Enforces all business rules through database constraints
+6.  Provides clear, normalized database schema (3NF)
+7.  Displays SQL implementation clearly for academic evaluation
 
 ---
 

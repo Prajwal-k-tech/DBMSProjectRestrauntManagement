@@ -47,7 +47,7 @@ dbmsproj/
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ### **Technology Stack**
 
@@ -58,20 +58,12 @@ dbmsproj/
 | **Database** | PostgreSQL 16.10 | Relational database with constraints |
 | **Styling** | Tailwind CSS 3.4.15 | Utility-first CSS framework |
 | **Language** | TypeScript 5.6.3 | Type-safe development |
-| **Theme** | Catppuccin Mocha | Dark mode color palette |
 
-### **Design Patterns**
 
-1. **Server-Side Rendering (SSR)**: Dashboard loads data on server
-2. **Client-Side Rendering (CSR)**: Interactive pages use `'use client'`
-3. **API-First Design**: Frontend calls backend via REST APIs
-4. **Type Safety**: Shared types between frontend and backend
-5. **Transaction Management**: Multi-step operations use BEGIN/COMMIT
-6. **Connection Pooling**: Reusable database connections
 
 ---
 
-## 📄 File-by-File Breakdown
+## File-by-File Breakdown
 
 ### **Frontend Pages**
 
@@ -93,8 +85,6 @@ dbmsproj/
 async function Dashboard() {
   // Execute 8 parallel database queries
   const [stats, ordersByStatus, revenueByType, ...] = await Promise.all([...]);
-  
-  // Render dashboard UI with Catppuccin Mocha colors
   return <div>...</div>;
 }
 ```

@@ -39,11 +39,11 @@ Order Information:
 ```
 
 **Problems with this structure:**
-- ❌ **Repeating groups**: Multiple items in a single order (violates atomicity)
-- ❌ **Data redundancy**: Customer info repeated for every order
-- ❌ **Update anomalies**: Changing customer phone requires updating all their orders
-- ❌ **Insertion anomalies**: Cannot add a customer without an order
-- ❌ **Deletion anomalies**: Deleting an order removes customer information
+- **Repeating groups**: Multiple items in a single order (violates atomicity)
+-  **Data redundancy**: Customer info repeated for every order
+-  **Update anomalies**: Changing customer phone requires updating all their orders
+-  **Insertion anomalies**: Cannot add a customer without an order
+-  **Deletion anomalies**: Deleting an order removes customer information
 
 ---
 
@@ -79,12 +79,12 @@ OrderData Table:
 
 **Primary Key:** Composite key `(order_id, item_name)`
 
-**✅ Achieved:**
+** Achieved:**
 - Each cell contains only atomic values
 - No repeating groups
 - Each row is unique
 
-**❌ Remaining Issues:**
+** Remaining Issues:**
 - Data redundancy (customer info, order info repeated for each item)
 - Partial dependencies exist (explained in 2NF)
 
@@ -169,11 +169,11 @@ Foreign Keys: order_id → orders(order_id)
 └──────────┴────────────┴──────────┴────────────┴──────────┘
 ```
 
-**✅ Achieved:**
+** Achieved:**
 - Eliminated partial dependencies
 - Each non-key attribute depends on the full primary key
 
-**❌ Remaining Issues:**
+** Remaining Issues:**
 - Transitive dependencies still exist (explained in 3NF)
 
 ---
@@ -321,7 +321,7 @@ Foreign Keys: order_id → orders(order_id)
 └───────────────┴──────────┴──────────────┴──────────┴────────────┴──────────┘
 ```
 
-**✅ Achieved:**
+** Achieved:**
 - Eliminated all transitive dependencies
 - Each table represents a single entity
 - Minimal data redundancy
@@ -375,30 +375,30 @@ menu_items (1) ──────< (M) order_items
 
 ### Benefits of 3NF Schema
 
-✅ **No Data Redundancy**: Each piece of information stored once  
-✅ **No Update Anomalies**: Updating data is consistent  
-✅ **No Insertion Anomalies**: Can add entities independently  
-✅ **No Deletion Anomalies**: Deleting data doesn't lose unrelated information  
-✅ **Data Integrity**: Enforced through foreign keys and constraints  
-✅ **Scalability**: Easy to extend with new features  
-✅ **Query Performance**: Properly indexed for common operations  
+ **No Data Redundancy**: Each piece of information stored once  
+ **No Update Anomalies**: Updating data is consistent  
+ **No Insertion Anomalies**: Can add entities independently  
+ **No Deletion Anomalies**: Deleting data doesn't lose unrelated information  
+ **Data Integrity**: Enforced through foreign keys and constraints  
+ **Scalability**: Easy to extend with new features  
+ **Query Performance**: Properly indexed for common operations  
 
 ---
 
 ## Verification Checklist
 
-### 1NF Verification ✅
+### 1NF Verification 
 - [x] All attributes are atomic
 - [x] No repeating groups
 - [x] Each table has a primary key
 - [x] Columns contain values of same type
 
-### 2NF Verification ✅
+### 2NF Verification 
 - [x] Table is in 1NF
 - [x] No partial dependencies
 - [x] All non-key attributes fully depend on primary key
 
-### 3NF Verification ✅
+### 3NF Verification 
 - [x] Table is in 2NF
 - [x] No transitive dependencies
 - [x] Non-key attributes don't depend on other non-key attributes
