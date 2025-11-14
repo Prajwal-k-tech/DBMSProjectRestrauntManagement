@@ -1,14 +1,10 @@
--- ============================================
 -- Seed Data for Restaurant Order Management System
 -- Sample Data: Tasty Bakes (Indian Bakery)
--- ============================================
 
 -- Clear existing data (for re-running)
 TRUNCATE order_items, orders, customers, menu_items, categories RESTART IDENTITY CASCADE;
 
--- ============================================
 -- CATEGORIES
--- ============================================
 INSERT INTO categories (name, description) VALUES
 ('Puffs', 'Savory baked pastries with various fillings'),
 ('Samosas', 'Crispy fried triangular snacks'),
@@ -16,9 +12,7 @@ INSERT INTO categories (name, description) VALUES
 ('Beverages', 'Hot and cold drinks'),
 ('Desserts', 'Sweet treats and cakes');
 
--- ============================================
 -- MENU ITEMS
--- ============================================
 
 -- Puffs (category_id = 1)
 INSERT INTO menu_items (category_id, name, description, price, is_available) VALUES
@@ -59,26 +53,22 @@ INSERT INTO menu_items (category_id, name, description, price, is_available) VAL
 (5, 'Gulab Jamun', 'Traditional Indian sweet (2 pieces)', 30.00, true),
 (5, 'Rasgulla', 'Soft cottage cheese balls in syrup (2 pieces)', 35.00, true);
 
--- ============================================
 -- CUSTOMERS
--- ============================================
 INSERT INTO customers (name, phone, email) VALUES
-('Rajesh Kumar', '9876543210', 'rajesh.kumar@email.com'),
-('Priya Sharma', '9123456789', 'priya.sharma@email.com'),
-('Amit Patel', '9988776655', 'amit.patel@email.com'),
-('Sneha Reddy', '9876512345', 'sneha.reddy@email.com'),
+('Prajwal Kumar', '9876543210', 'prajwal.kumar@email.com'),
+('Anupam Mishra', '9123456789', 'anupam.mishra@email.com'),
+('Kushal Arora', '9988776655', 'kushal.arora@email.com'),
+('Sandeep Singh', '9876512345', 'sandeep.singh@email.com'),
 ('Vikram Singh', '9123498765', NULL),
 ('Ananya Iyer', '9876501234', 'ananya.iyer@email.com'),
 ('Rohan Desai', '9988123456', NULL),
 ('Kavya Nair', '9876567890', 'kavya.nair@email.com');
 
--- ============================================
 -- ORDERS
--- ============================================
 
--- Order 1: Rajesh Kumar - Morning breakfast takeaway
+-- Order 1: Prajwal Kumar - Morning breakfast takeaway
 INSERT INTO orders (customer_id, order_date, total_amount, status, order_type, notes) VALUES
-(1, '2025-11-14 08:30:00', 95.00, 'delivered', 'takeaway', 'Pack separately please');
+(1, '2025-11-14 08:30:00', 115.00, 'delivered', 'takeaway', 'Pack separately please');
 
 INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal) VALUES
 (1, 1, 2, 25.00, 50.00),  -- 2 Veg Puffs
@@ -86,25 +76,25 @@ INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal)
 (1, 6, 1, 20.00, 20.00),   -- 1 Veg Samosa
 (1, 11, 2, 15.00, 30.00);  -- 2 Masala Buns
 
--- Order 2: Priya Sharma - Office party order
+-- Order 2: Anupam Mishra- Office party order
 INSERT INTO orders (customer_id, order_date, total_amount, status, order_type, notes) VALUES
-(2, '2025-11-14 10:15:00', 340.00, 'delivered', 'takeaway', 'Urgent - office meeting');
+(2, '2025-11-14 10:15:00', 385.00, 'delivered', 'takeaway', 'Urgent - office meeting');
 
 INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal) VALUES
 (2, 2, 5, 35.00, 175.00),  -- 5 Chicken Puffs
 (2, 7, 5, 30.00, 150.00),  -- 5 Chicken Samosas
 (2, 17, 3, 20.00, 60.00);  -- 3 Coffees
 
--- Order 3: Amit Patel - Lunch dine-in
+-- Order 3: Kushal Arora - Lunch dine-in
 INSERT INTO orders (customer_id, order_date, total_amount, status, order_type) VALUES
-(3, '2025-11-14 12:45:00', 185.00, 'delivered', 'dine-in');
+(3, '2025-11-14 12:45:00', 225.00, 'delivered', 'dine-in');
 
 INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal) VALUES
 (3, 4, 2, 40.00, 80.00),   -- 2 Paneer Puffs
 (3, 5, 1, 45.00, 45.00),   -- 1 Mushroom Puff
 (3, 18, 2, 50.00, 100.00); -- 2 Cold Coffees
 
--- Order 4: Sneha Reddy - Evening snacks (pending)
+-- Order 4: Sandeep Singh - Evening snacks (pending)
 INSERT INTO orders (customer_id, order_date, total_amount, status, order_type, notes) VALUES
 (4, '2025-11-14 16:20:00', 220.00, 'preparing', 'takeaway', 'Extra spicy please');
 
@@ -124,7 +114,7 @@ INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal)
 
 -- Order 6: Ananya Iyer - Dessert order
 INSERT INTO orders (customer_id, order_date, total_amount, status, order_type, notes) VALUES
-(6, '2025-11-14 15:00:00', 220.00, 'delivered', 'dine-in', 'Birthday celebration');
+(6, '2025-11-14 15:00:00', 230.00, 'delivered', 'dine-in', 'Birthday celebration');
 
 INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal) VALUES
 (6, 21, 2, 60.00, 120.00),  -- 2 Black Forest Cake slices
@@ -133,7 +123,7 @@ INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal)
 
 -- Order 7: Rohan Desai - Large family order (pending)
 INSERT INTO orders (customer_id, order_date, total_amount, status, order_type, notes) VALUES
-(7, '2025-11-14 17:00:00', 525.00, 'pending', 'takeaway', 'Will pick up at 6 PM');
+(7, '2025-11-14 17:00:00', 575.00, 'pending', 'takeaway', 'Will pick up at 6 PM');
 
 INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal) VALUES
 (7, 1, 5, 25.00, 125.00),   -- 5 Veg Puffs
@@ -143,15 +133,13 @@ INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal)
 
 -- Order 8: Kavya Nair - Sweet treats
 INSERT INTO orders (customer_id, order_date, total_amount, status, order_type) VALUES
-(8, '2025-11-14 13:15:00', 150.00, 'cancelled', 'takeaway');
+(8, '2025-11-14 13:15:00', 160.00, 'cancelled', 'takeaway');
 
 INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price, subtotal) VALUES
-(8, 24, 3, 30.00, 90.00),   -- 3 Gulab Jamun
-(8, 25, 2, 35.00, 70.00);   -- 2 Rasgulla
+(8, 23, 3, 30.00, 90.00),   -- 3 Gulab Jamun
+(8, 24, 2, 35.00, 70.00);   -- 2 Rasgulla
 
--- ============================================
 -- VERIFICATION QUERIES
--- ============================================
 
 -- Summary statistics
 SELECT 
@@ -201,10 +189,6 @@ GROUP BY mi.name, c.name
 ORDER BY total_quantity_sold DESC
 LIMIT 5;
 
--- ============================================
 -- SEED DATA COMPLETE
--- ============================================
 -- Total: 5 categories, 25 menu items, 8 customers, 8 orders, 30 order items
 -- Revenue: Mix of delivered, preparing, ready, pending, and cancelled orders
--- Realistic Indian bakery data with various order types and scenarios
--- ============================================

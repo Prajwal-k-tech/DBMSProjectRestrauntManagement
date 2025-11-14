@@ -125,6 +125,25 @@ export async function DELETE(
       );
     }
 
+    // Check if item is used in any orders
+    const checkSql = `
+      SELECT COUNT(*) as count 
+      FROM order_items 
+      WHERE menu_item_id = $1
+    `;
+    const checkResult = await query(checkSql, [menuItemId]);
+    const orderCount = parseInt(checkResult.rows[0].count);
+
+    if (orderCount > 0) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: `Cannot delete menu item. It is referenced in ${orderCount} order(s). Consider marking it as unavailable instead.`
+        },
+        { status: 409 }
+      );
+    }
+
     const sql = `DELETE FROM menu_items WHERE menu_item_id = $1 RETURNING *`;
     const result = await query(sql, [menuItemId]);
 

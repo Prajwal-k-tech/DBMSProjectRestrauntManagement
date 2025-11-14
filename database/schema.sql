@@ -1,10 +1,6 @@
--- ============================================
--- Restaurant Order Management System
--- Database Schema - PostgreSQL
--- Simple, Clean SQL for Academic Project
--- ============================================
+--Restraunt order management system
 
--- Clean slate: Drop existing objects
+-- cleaning up existing objects
 DROP TABLE IF EXISTS order_items CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS customers CASCADE;
@@ -13,10 +9,7 @@ DROP TABLE IF EXISTS categories CASCADE;
 DROP TYPE IF EXISTS order_status_enum CASCADE;
 DROP TYPE IF EXISTS order_type_enum CASCADE;
 
--- ============================================
--- ENUMS: Define controlled value sets
--- ============================================
-
+--custom types for order status and type, we need order status to track progress
 CREATE TYPE order_status_enum AS ENUM (
     'pending',
     'preparing',
@@ -24,29 +17,22 @@ CREATE TYPE order_status_enum AS ENUM (
     'delivered',
     'cancelled'
 );
-
+--order type to distinguish between dine-in and takeaway
 CREATE TYPE order_type_enum AS ENUM (
     'dine-in',
     'takeaway'
 );
 
--- ============================================
--- TABLE 1: categories
--- Stores menu categories (Puffs, Beverages, etc.)
--- ============================================
+--Categories table, this is to categorize the type of menu items 
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
     CONSTRAINT chk_category_name CHECK (LENGTH(TRIM(name)) > 0)
 );
 
--- ============================================
--- TABLE 2: menu_items
--- Stores restaurant menu with prices and availability
--- ============================================
+-- menu items table to keep track of items available in the menu
 CREATE TABLE menu_items (
     menu_item_id SERIAL PRIMARY KEY,
     category_id INTEGER NOT NULL REFERENCES categories(category_id),
@@ -56,15 +42,10 @@ CREATE TABLE menu_items (
     is_available BOOLEAN DEFAULT true,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
     CONSTRAINT chk_menu_item_name CHECK (LENGTH(TRIM(name)) > 0),
     CONSTRAINT uq_menu_item_name UNIQUE (name, category_id)
 );
-
--- ============================================
--- TABLE 3: customers
--- Stores customer contact information
--- ============================================
+    -- customer table to store customer details 
 CREATE TABLE customers (
     customer_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL CHECK (LENGTH(TRIM(name)) > 0),
@@ -73,10 +54,7 @@ CREATE TABLE customers (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================
--- TABLE 4: orders
--- Stores order headers with status and totals
--- ============================================
+-- orders tables to track the orders 
 CREATE TABLE orders (
     order_id SERIAL PRIMARY KEY,
     customer_id INTEGER NOT NULL REFERENCES customers(customer_id),
@@ -89,10 +67,7 @@ CREATE TABLE orders (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================
--- TABLE 5: order_items (Junction Table)
--- Stores items within each order with quantities
--- ============================================
+-- order_items table to track items within each order
 CREATE TABLE order_items (
     order_item_id SERIAL PRIMARY KEY,
     order_id INTEGER NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
@@ -104,21 +79,7 @@ CREATE TABLE order_items (
     CONSTRAINT chk_subtotal_matches CHECK (subtotal = quantity * unit_price),
     CONSTRAINT uq_order_item UNIQUE (order_id, menu_item_id)
 );
-
--- ============================================
--- INDEXES: Improve query performance
--- ============================================
-CREATE INDEX idx_menu_items_category ON menu_items(category_id);
-CREATE INDEX idx_menu_items_available ON menu_items(is_available);
-CREATE INDEX idx_orders_customer ON orders(customer_id);
-CREATE INDEX idx_orders_status ON orders(status);
-CREATE INDEX idx_orders_date ON orders(order_date);
-CREATE INDEX idx_order_items_order ON order_items(order_id);
-CREATE INDEX idx_order_items_menu_item ON order_items(menu_item_id);
-
--- ============================================
--- TRIGGERS: Auto-update timestamps
--- ============================================
+-- triggers for automation 
 CREATE OR REPLACE FUNCTION update_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -135,10 +96,7 @@ CREATE TRIGGER trg_orders_update
     BEFORE UPDATE ON orders
     FOR EACH ROW EXECUTE FUNCTION update_timestamp();
 
--- ============================================
--- VIEWS: Simplify common queries
--- ============================================
-
+--Views to simplify common queries
 -- Complete order details
 CREATE VIEW vw_order_details AS
 SELECT 
@@ -167,8 +125,6 @@ SELECT
 FROM menu_items mi
 JOIN categories c ON mi.category_id = c.category_id;
 
--- ============================================
 -- SCHEMA COMPLETE
 -- Total: 5 tables, 4 relationships, 2 views
 -- Normalized to 3NF
--- ============================================
