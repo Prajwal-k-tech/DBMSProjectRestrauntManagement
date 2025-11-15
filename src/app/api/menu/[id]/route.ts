@@ -67,6 +67,30 @@ export async function PUT(
 
     const { category_id, name, description, price, is_available } = body;
 
+    // Validate price if provided
+    if (price !== undefined && price !== null) {
+      if (typeof price !== 'number' || price <= 0) {
+        return NextResponse.json(
+          { success: false, error: 'Price must be a positive number' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Validate category exists if being changed
+    if (category_id) {
+      const categoryCheck = await query(
+        'SELECT category_id FROM categories WHERE category_id = $1',
+        [category_id]
+      );
+      if (categoryCheck.rows.length === 0) {
+        return NextResponse.json(
+          { success: false, error: 'Invalid category ID' },
+          { status: 400 }
+        );
+      }
+    }
+
     const sql = `
       UPDATE menu_items
       SET 

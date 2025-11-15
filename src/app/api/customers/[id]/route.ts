@@ -79,6 +79,21 @@ export async function PUT(
       );
     }
 
+    // Check if phone is being changed and if new phone already exists for another customer
+    if (phone) {
+      const checkPhone = await query(
+        'SELECT customer_id FROM customers WHERE phone = $1 AND customer_id != $2',
+        [phone, customerId]
+      );
+
+      if (checkPhone.rows.length > 0) {
+        return NextResponse.json(
+          { success: false, error: 'Phone number already registered to another customer' },
+          { status: 409 }
+        );
+      }
+    }
+
     const sql = `
       UPDATE customers
       SET 

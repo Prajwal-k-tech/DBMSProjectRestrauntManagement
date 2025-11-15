@@ -172,7 +172,6 @@ export default function MenuPage() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...item,
           is_available: !item.is_available
         })
       });
@@ -180,9 +179,12 @@ export default function MenuPage() {
       const data = await res.json();
       if (data.success) {
         fetchMenuItems(selectedCategory || undefined);
+      } else {
+        alert('Error toggling availability: ' + (data.error || 'Unknown error'));
       }
     } catch (error) {
       console.error('Error toggling availability:', error);
+      alert('Failed to toggle availability');
     }
   };
 

@@ -155,33 +155,20 @@ export async function DELETE(
       );
     }
 
-    await query('BEGIN');
+    // order_items has ON DELETE CASCADE, so they'll be auto-deleted
+    const result = await query('DELETE FROM orders WHERE order_id = $1 RETURNING *', [orderId]);
 
-    try {
-      // Delete order items first (foreign key constraint)
-      await query('DELETE FROM order_items WHERE order_id = $1', [orderId]);
-      
-      // Delete order
-      const result = await query('DELETE FROM orders WHERE order_id = $1 RETURNING *', [orderId]);
-
-      if (result.rows.length === 0) {
-        await query('ROLLBACK');
-        return NextResponse.json(
-          { success: false, error: 'Order not found' },
-          { status: 404 }
-        );
-      }
-
-      await query('COMMIT');
-
-      return NextResponse.json({
-        success: true,
-        message: 'Order deleted successfully'
-      });
-    } catch (error) {
-      await query('ROLLBACK');
-      throw error;
+    if (result.rows.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Order not found' },
+        { status: 404 }
+      );
     }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Order deleted successfully'
+    });
   } catch (error) {
     console.error('Error deleting order:', error);
     return NextResponse.json(

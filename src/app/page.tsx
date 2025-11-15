@@ -1,26 +1,66 @@
-export default async function Home() {
-  // Fetch stats from API
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-  
-  let stats = null;
-  try {
-    const res = await fetch(`${baseUrl}/api/stats`, { 
-      cache: 'no-store' 
-    });
-    const data = await res.json();
-    if (data.success) {
-      stats = data.data;
-    }
-  } catch (error) {
-    console.error('Error fetching stats:', error);
-  }
+'use client';
 
-  if (!stats) {
+import { useEffect, useState } from 'react';
+
+export default function Home() {
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await fetch('/api/stats', { 
+        cache: 'no-store' 
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStats(data.data);
+      } else {
+        setError('Failed to load dashboard statistics');
+      }
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+      setError('Failed to connect to the database');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-mocha-blue mx-auto mb-4"></div>
           <h2 className="text-2xl font-bold text-mocha-text mb-2">Loading Dashboard...</h2>
-          <p className="text-mocha-subtext0">Please ensure the database is connected</p>
+          <p className="text-mocha-subtext0">Fetching latest statistics</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-mocha-red/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-mocha-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-mocha-text mb-2">Dashboard Unavailable</h2>
+          <p className="text-mocha-subtext0 mb-4">{error || 'Please ensure the database is connected'}</p>
+          <button
+            onClick={fetchStats}
+            className="px-6 py-2 bg-mocha-blue text-mocha-base rounded-lg font-medium hover:bg-mocha-sapphire transition-colors"
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
