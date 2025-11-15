@@ -105,6 +105,35 @@ export default function CustomersPage() {
     }
   };
 
+  const handleDeleteCustomer = async (customerId: number, customerName: string, orderCount: string) => {
+    if (parseInt(orderCount) > 0) {
+      alert(`Cannot delete ${customerName}. This customer has ${orderCount} order(s).\n\nCustomers with existing orders cannot be deleted to maintain order history.`);
+      return;
+    }
+
+    if (!confirm(`Are you sure you want to delete ${customerName}?\n\nThis action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/customers/${customerId}`, {
+        method: 'DELETE'
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert('Customer deleted successfully!');
+        fetchCustomers(searchTerm || undefined);
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+      alert('Failed to delete customer');
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -231,16 +260,26 @@ export default function CustomersPage() {
                   </p>
                 </div>
 
-                {/* Edit Button */}
-                <div className="mt-4">
+                {/* Action Buttons */}
+                <div className="mt-4 flex gap-2">
                   <button
                     onClick={() => openEditModal(customer)}
-                    className="w-full px-4 py-2 bg-mocha-blue/20 text-mocha-blue rounded-lg text-sm font-medium hover:bg-mocha-blue/30 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2 bg-mocha-blue/20 text-mocha-blue rounded-lg text-sm font-medium hover:bg-mocha-blue/30 transition-colors flex items-center justify-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
-                    Edit Customer
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteCustomer(customer.customer_id, customer.name, customer.order_count)}
+                    className="px-4 py-2 bg-mocha-red/20 text-mocha-red rounded-lg text-sm font-medium hover:bg-mocha-red/30 transition-colors flex items-center justify-center gap-2"
+                    title="Delete Customer"
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    Delete
                   </button>
                 </div>
               </div>
