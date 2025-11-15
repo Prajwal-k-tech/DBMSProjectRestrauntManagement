@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 
-// GET /api/categories - Fetch all categories
+// GET /api/categories - Fetch all categories and the respective menu items under them 
 export async function GET() {
   try {
     const sql = `
@@ -18,7 +18,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      data: result.rows,
+      data: result.rows, //this gets us all the rows from the select statement
       count: result.rows.length
     });
   } catch (error) {
