@@ -12,7 +12,7 @@
     "db:seed": "psql -U restaurant_user -d restaurant_db -f database/seed-data.sql"
   },
   "dependencies": {
-    "next": "^15.0.3",
+    "next": "15.0.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "pg": "^8.13.1",
