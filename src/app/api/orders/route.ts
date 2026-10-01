@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { query } from '@/lib/db';
+import pool, { query } from '@/lib/db';
 
 // GET /api/orders - Fetch all orders
 export async function GET(request: NextRequest) {
@@ -63,24 +63,28 @@ export async function POST(request: NextRequest) {
     const { customer_id, order_type, items, notes } = body;
 
     // Validation
-    if (!customer_id || !order_type || !items || items.length === 0) {
+    if (!Number.isSafeInteger(customer_id) || customer_id <= 0 ||
+        !['dine-in', 'takeaway'].includes(order_type) ||
+        !Array.isArray(items) || items.length === 0 ||
+        items.some(item => !item || !Number.isSafeInteger(item.menu_item_id) ||
+            item.menu_item_id <= 0 || !Number.isSafeInteger(item.quantity) || item.quantity <= 0)) {
       return NextResponse.json(
         { 
           success: false, 
-          error: 'Missing required fields: customer_id, order_type, items' 
+          error: 'Provide a positive customer ID, a valid order type, and items with positive integer IDs and quantities' 
         },
         { status: 400 }
       );
     }
 
-    // Begin transaction
-    await query('BEGIN');
-
+    // A transaction must use one checked-out database connection.
+    const client = await pool.connect();
     try {
+      await client.query('BEGIN');
       // Calculate total amount
       let totalAmount = 0;
       for (const item of items) {
-        const menuItem = await query(
+        const menuItem = await client.query(
           'SELECT price FROM menu_items WHERE menu_item_id = $1',
           [item.menu_item_id]
         );
@@ -99,7 +103,7 @@ export async function POST(request: NextRequest) {
         RETURNING *
       `;
 
-      const orderResult = await query(orderSql, [
+      const orderResult = await client.query(orderSql, [
         customer_id,
         totalAmount.toFixed(2),
         'pending',
@@ -118,7 +122,7 @@ export async function POST(request: NextRequest) {
 
       const orderItems = [];
       for (const item of items) {
-        const menuItem = await query(
+        const menuItem = await client.query(
           'SELECT price FROM menu_items WHERE menu_item_id = $1',
           [item.menu_item_id]
         );
@@ -126,7 +130,7 @@ export async function POST(request: NextRequest) {
         const unitPrice = parseFloat(menuItem.rows[0].price);
         const subtotal = unitPrice * item.quantity;
 
-        const itemResult = await query(orderItemsSql, [
+        const itemResult = await client.query(orderItemsSql, [
           order.order_id,
           item.menu_item_id,
           item.quantity,
@@ -138,7 +142,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Commit transaction
-      await query('COMMIT');
+      await client.query('COMMIT');
 
       return NextResponse.json(
         {
@@ -153,8 +157,10 @@ export async function POST(request: NextRequest) {
       );
     } catch (error) {
       // Rollback on error
-      await query('ROLLBACK');
+      await client.query('ROLLBACK');
       throw error;
+    } finally {
+      client.release();
     }
   } catch (error) {
     console.error('Error creating order:', error);
