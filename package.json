@@ -12,26 +12,31 @@
     "db:seed": "psql -U restaurant_user -d restaurant_db -f database/seed-data.sql"
   },
   "dependencies": {
-    "next": "^15.0.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "dotenv": "^16.4.5",
+    "next": "15.5.27",
     "pg": "^8.13.1",
-    "dotenv": "^16.4.5"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.9.1",
+    "@types/pg": "^8.11.10",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
-    "@types/pg": "^8.11.10",
-    "typescript": "^5.6.3",
-    "tailwindcss": "^3.4.15",
-    "postcss": "^8.4.49",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.15.0",
-    "eslint-config-next": "^15.0.3"
+    "eslint-config-next": "15.5.27",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.6.3"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=18.18.0",
     "npm": ">=9.0.0"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "8.5.28"
+    }
   }
 }
