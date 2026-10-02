@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { 
           success: false, 
-          error: 'Provide a positive customer ID, a valid order type, and items with positive integer IDs and quantities' 
+          error: 'Provide a positive customer ID, a valid order type, and items with positive integer IDs and quantities'
         },
         { status: 400 }
       );
