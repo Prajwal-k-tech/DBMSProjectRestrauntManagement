@@ -32,10 +32,10 @@ Open http://localhost:3000. `npm run build` creates the application build and `n
 - `database/schema.sql`: five related tables, enum types, constraints and indexes.
 - `database/seed-data.sql`: example bakery data.
 
-Order creation stores the unit price with each line item and records a cumulative total. The proposed transaction patch checks out one database client for all statements and releases it after commit or rollback, following [node-postgres transaction guidance](https://node-postgres.com/features/transactions).
+Order creation stores the unit price with each line item and records a cumulative total. Order creation checks out one database client for all statements and releases it after commit or rollback, following [node-postgres transaction guidance](https://node-postgres.com/features/transactions).
 
 ## Scope
 
 This is an academic management prototype. Authentication and role-based authorization are not implemented in the inspected API handlers. Use local sample data rather than exposing customer records through a public deployment. Production migrations, monetary-rounding policy, deployment configuration and concurrent behavior need separate validation.
 
-The dashboard obtains statistics through API requests; it is not a streaming analytics system. No complete-feature, security-audit or production-readiness guarantee is claimed. Implementation tests were not run for this documentation and transaction patch.
+The dashboard obtains statistics through API requests; it is not a streaming analytics system. No complete-feature, security-audit or production-readiness guarantee is claimed. The production build and local API smoke checks passed on 4 October 2026 against an isolated PostgreSQL 17 database. Checks covered all collection endpoints, multi-item order totals, status persistence, invalid quantities, and rollback after a foreign-key failure. See [runtime evidence](docs/RUNTIME-CHECK.md).
