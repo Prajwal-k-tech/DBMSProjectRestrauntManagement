@@ -39,3 +39,7 @@ Order creation stores the unit price with each line item and records a cumulativ
 This is an academic management prototype. Authentication and role-based authorization are not implemented in the inspected API handlers. Use local sample data rather than exposing customer records through a public deployment. Production migrations, monetary-rounding policy, deployment configuration and concurrent behavior need separate validation.
 
 The dashboard obtains statistics through API requests; it is not a streaming analytics system. No complete-feature, security-audit or production-readiness guarantee is claimed. The production build and local API smoke checks passed on 4 October 2026 against an isolated PostgreSQL 17 database. Checks covered all collection endpoints, multi-item order totals, status persistence, invalid quantities, and rollback after a foreign-key failure. See [runtime evidence](docs/RUNTIME-CHECK.md).
+
+## Recovery
+
+See [RECOVERY.md](RECOVERY.md) for rebuilding an offloaded checkout and restoring its dependencies/data.
